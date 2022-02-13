@@ -1,0 +1,118 @@
+﻿@model List<Grad_Proj.Entites.Item>
+
+@inject Core.Interfaces.IUnitOfWork<Grad_Proj.Entites.Item> _items
+@inject Core.Interfaces.IUnitOfWork<Grad_Proj.Entites.Category> _categories
+
+<main class="main">
+    <div class="container">
+        <div class="row row--grid">
+            <!-- breadcrumb -->
+            <div class="col-12">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb__item"><a href="/">Home</a></li>
+                    <li class="breadcrumb__item breadcrumb__item--active">Explore</li>
+                </ul>
+            </div>
+            <!-- end breadcrumb -->
+            <!-- title -->
+            <div class="col-12">
+                <div class="main__title main__title--page">
+                    <h1>Explore exclusive digital assets</h1>
+                </div>
+            </div>
+            <!-- end title -->
+            <!-- filter -->
+            <div class="col-12">
+                <div class="main__filter">
+                    <form action="#" class="main__filter-search">
+                        <input type="text" placeholder="Search...">
+                        <button type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z" /></svg></button>
+                    </form>
+
+                    <div class="main__filter-wrap">
+
+                        <select id="categories" onchange="callFilterByCategory()" class="main__select" name="category">
+                            <option value="All genres">All categories</option>
+                            @foreach (var item in _categories.Entity.GetAll())
+                            {
+                                <option value="@item.Id">@item.Title</option>
+                            }
+
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end filter -->
+        </div>
+
+        <div class="row row--grid">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                    <!-- carousel card -->
+                    <div class="card">
+                        <div class="card__cover card__cover--carousel owl-carousel">
+                            @foreach (var image in item.ItemImages)
+                            {
+                                <img src="~/images/@image.Image" alt="">
+                            }
+                        </div>
+                        <h3 class="card__title"><a href="/Items/ItemDetails/@item.Id">@item.Title</a></h3>
+                        <div class="card__author card__author--verified">
+                            <img src="~/images/@item.Author.Image" alt="">
+                            <a href="/Items/Create?id=@item.Id"> @item.Author.NickName</a>
+                        </div>
+                        <div class="card__info">
+                            <div class="card__price">
+                                <span>Reserve price</span>
+                                <span>@item.Price</span>
+                            </div>
+                            <button class="card__likes" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.16,5A6.29,6.29,0,0,0,12,4.36a6.27,6.27,0,0,0-8.16,9.48l6.21,6.22a2.78,2.78,0,0,0,3.9,0l6.21-6.22A6.27,6.27,0,0,0,20.16,5Zm-1.41,7.46-6.21,6.21a.76.76,0,0,1-1.08,0L5.25,12.43a4.29,4.29,0,0,1,0-6,4.27,4.27,0,0,1,6,0,1,1,0,0,0,1.42,0,4.27,4.27,0,0,1,6,0A4.29,4.29,0,0,1,18.75,12.43Z" /></svg>
+                                <span></span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- end carousel card -->
+                </div>
+            }
+
+        </div>
+
+        <!-- paginator -->
+        <div class="row row--grid">
+            <div class="col-12">
+                <div class="paginator">
+                    <span class="paginator__pages">@Model.Count item</span>
+
+                    <ul class="paginator__list">
+                        <li class="active"><a href="#">1</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- end paginator -->
+    </div>
+</main>
+<!-- end main content -->
+
+@section script{
+    <script>
+        $(document).ready(function () {
+
+            function callFilterByCategory() {
+                var catId = $('#categories').val();
+                $.get('/Items/Index?id=' + catId);
+            }
+
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+}
