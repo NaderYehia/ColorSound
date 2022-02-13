@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\nader\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\nader\\.nuget\\packages"
+    ]
+  }
+}

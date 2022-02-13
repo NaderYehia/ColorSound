@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Grad_Proj.Entites.AuthorToAuthor>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_DashLayout.cshtml";
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Follower)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Since)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Follower.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Since)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
